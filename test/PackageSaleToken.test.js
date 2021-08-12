@@ -71,11 +71,12 @@ describe("PackageSaleToken", () => {
 
   describe("buy with referral", async() => {
     it("should transfer tokens properly", async() => {
-      await shotToken.mint(pst.address, toWei("18666"))
-      
+      await shotToken.mint(pst.address, toWei("18666"))      
+
       // test package 1
       await busdToken.mint(bob, toWei("39"))
       await busdToken.approve(pst.address, toWei("39"), {from:bob})
+      await expect(pst.buy(toWei("39"), bob, {from:bob})).revertedWith("Self-referral is not allowed")
       await pst.buy(toWei("39"), marry, {from:bob})
       expect((await busdToken.balanceOf(bob)).toString()).to.eq("0")
       expect((await shotToken.balanceOf(bob)).toString()).to.eq(toWei("300"))

@@ -45,8 +45,9 @@ contract PackageSaleToken is Ownable {
     }
 
     function buy(uint256 _aAmount, address _referralAddress) public {
+        require(msg.sender != _referralAddress, "Self-referral is not allowed");
         require(packages[_aAmount] != 0, "No package");
-
+        
         uint256 _bAmount = packages[_aAmount];
 
         tokenA.safeTransferFrom(msg.sender, address(this), _aAmount);
