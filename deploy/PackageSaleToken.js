@@ -20,7 +20,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
       );
     }
     const shotToken = await ERC20.at(process.env.TOKEN_B_ADDRESS)
-    await shotToken.approve(pst.address, ethers.constants.MaxUint256.sub(1), {from:affiliateWallet})
+    await shotToken.approve(pst.address, ethers.constants.MaxUint256.sub(1).toString(), {from:affiliateWallet})
   }
 }
 
