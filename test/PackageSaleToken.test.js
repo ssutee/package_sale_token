@@ -1,6 +1,6 @@
 const { default: BigNumber } = require("bignumber.js");
 const { expect } = require("chai");
-const { web3, artifacts } = require("hardhat");
+const { web3, artifacts, ethers } = require("hardhat");
 
 const BasicToken = artifacts.require("BasicToken");
 const PackageSaleToken = artifacts.require("PackageSaleToken");
@@ -8,21 +8,22 @@ const PackageSaleToken = artifacts.require("PackageSaleToken");
 const toWei = web3.utils.toWei;
 
 describe("PackageSaleToken", () => {
-  let deployer, bob, marry, john;
+  let deployer, affiliateWallet,  bob, marry;
   let shotToken, busdToken, pst;
   
   before(async () => {
     accounts = await web3.eth.getAccounts();
     deployer = accounts[0];
-    bob = accounts[1];
-    marry = accounts[2];
-    john = accounts[3];
+    affiliateWallet = accounts[1];
+    bob = accounts[2];
+    marry = accounts[3];
   })
 
   beforeEach(async () => {
     shotToken = await BasicToken.new("SHOT Token", "SHOT", { from: deployer });
     busdToken = await BasicToken.new("BUSD Token", "BUSD", { from: deployer });
-    pst = await PackageSaleToken.new(busdToken.address, shotToken.address);
+    pst = await PackageSaleToken.new(busdToken.address, shotToken.address, affiliateWallet);
+    await shotToken.approve(pst.address, ethers.constants.MaxUint256.sub(1), {from: affiliateWallet});
   })
 
   describe("constructor", async() => {
@@ -71,7 +72,8 @@ describe("PackageSaleToken", () => {
 
   describe("buy with referral", async() => {
     it("should transfer tokens properly", async() => {
-      await shotToken.mint(pst.address, toWei("18666"))      
+      await shotToken.mint(pst.address, toWei("18300"))      
+      await shotToken.mint(affiliateWallet, toWei("366"))
 
       // test package 1
       await busdToken.mint(bob, toWei("39"))

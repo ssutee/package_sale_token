@@ -26,9 +26,18 @@ module.exports = {
   namedAccounts: {
     deployer: {
       default: 0
+    },
+    affiliateWallet: {
+      default: 1
     }
   },
   networks: {    
+    hardhat: {
+      forking: {
+        url: process.env.BSC_RPC
+      },
+      tags: ['production']
+    },
     'bsc-testnet': {
       url: process.env.BSC_TESTNET_RPC,
       chainId: 97,
