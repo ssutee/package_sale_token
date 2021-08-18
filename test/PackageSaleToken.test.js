@@ -82,6 +82,8 @@ describe("PackageSaleToken", () => {
       await pst.buy(toWei("39"), marry, {from:bob})
       expect((await busdToken.balanceOf(bob)).toString()).to.eq("0")
       expect((await shotToken.balanceOf(bob)).toString()).to.eq(toWei("300"))
+      expect((await pst.referralCount(marry)).toString()).to.eq("1");
+      expect((await pst.referralAmount(marry)).toString()).to.eq(toWei("6"));
   
       // test package 2
       await busdToken.mint(bob, toWei("120"))
@@ -89,6 +91,8 @@ describe("PackageSaleToken", () => {
       await pst.buy(toWei("120"), marry, {from:bob})
       expect((await busdToken.balanceOf(bob)).toString()).to.eq("0")
       expect((await shotToken.balanceOf(bob)).toString()).to.eq(toWei("1300"))
+      expect((await pst.referralCount(marry)).toString()).to.eq("2");
+      expect((await pst.referralAmount(marry)).toString()).to.eq(toWei("26"));
   
       // test package 3
       await busdToken.mint(bob, toWei("225"))
@@ -96,6 +100,8 @@ describe("PackageSaleToken", () => {
       await pst.buy(toWei("225"), marry, {from:bob})
       expect((await busdToken.balanceOf(bob)).toString()).to.eq("0")
       expect((await shotToken.balanceOf(bob)).toString()).to.eq(toWei("3300"))
+      expect((await pst.referralCount(marry)).toString()).to.eq("3");
+      expect((await pst.referralAmount(marry)).toString()).to.eq(toWei("66"));
   
       // test package 4
       await busdToken.mint(bob, toWei("525"))
@@ -103,6 +109,8 @@ describe("PackageSaleToken", () => {
       await pst.buy(toWei("525"), marry, {from:bob})
       expect((await busdToken.balanceOf(bob)).toString()).to.eq("0")
       expect((await shotToken.balanceOf(bob)).toString()).to.eq(toWei("8300"))
+      expect((await pst.referralCount(marry)).toString()).to.eq("4");
+      expect((await pst.referralAmount(marry)).toString()).to.eq(toWei("166"));
   
       // test package 5
       await busdToken.mint(bob, toWei("1000"))
@@ -110,6 +118,8 @@ describe("PackageSaleToken", () => {
       await pst.buy(toWei("1000"), marry, {from:bob})
       expect((await busdToken.balanceOf(bob)).toString()).to.eq("0")
       expect((await shotToken.balanceOf(bob)).toString()).to.eq(toWei("18300"))
+      expect((await pst.referralCount(marry)).toString()).to.eq("5");
+      expect((await pst.referralAmount(marry)).toString()).to.eq(toWei("366"));
   
       expect((await shotToken.balanceOf(pst.address)).toString()).to.eq(toWei("0"))
       expect((await shotToken.balanceOf(marry)).toString()).to.eq(toWei("366"))    

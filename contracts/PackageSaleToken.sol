@@ -14,6 +14,12 @@ contract PackageSaleToken is Ownable {
 
     address public affiliateWallet;
 
+    // account => referral count
+    mapping(address => uint256) public referralCount;
+
+    // account => referral amount
+    mapping(address => uint256) public referralAmount;
+
     // tokenA amount => tokenB amount
     mapping(uint256 => uint256) public packages;
 
@@ -67,6 +73,8 @@ contract PackageSaleToken is Ownable {
             ).div(
                 100 * PERCENT_PRECISION
             );
+            referralCount[_referralAddress] = referralCount[_referralAddress].add(1);
+            referralAmount[_referralAddress] = referralAmount[_referralAddress].add(_referralFeeAmount);
             tokenB.safeTransferFrom(affiliateWallet, _referralAddress, _referralFeeAmount);
         }
     }
